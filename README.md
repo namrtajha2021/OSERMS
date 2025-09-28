@@ -1,6 +1,7 @@
-Online School Exam Result Management System
+# Online School Exam Result Management System
 
-test2
+
+![Database ER Diagram](diagrams/OSERMS-ERD.svg)
 
 
 
