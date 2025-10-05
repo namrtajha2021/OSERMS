@@ -1,0 +1,228 @@
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+--
+-- Host: localhost    Database: oserms
+-- ------------------------------------------------------
+-- Server version	8.0.42
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `co_scholastic`
+--
+
+DROP TABLE IF EXISTS `co_scholastic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `co_scholastic` (
+  `entry_id` int NOT NULL AUTO_INCREMENT,
+  `student_id` int DEFAULT NULL,
+  `term` varchar(10) DEFAULT NULL,
+  `discipline` char(1) DEFAULT NULL,
+  `work_education` char(1) DEFAULT NULL,
+  `art_education` char(1) DEFAULT NULL,
+  `remarks` text,
+  PRIMARY KEY (`entry_id`),
+  KEY `student_id` (`student_id`),
+  CONSTRAINT `co_scholastic_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `co_scholastic`
+--
+
+LOCK TABLES `co_scholastic` WRITE;
+/*!40000 ALTER TABLE `co_scholastic` DISABLE KEYS */;
+INSERT INTO `co_scholastic` VALUES (1,1,'term 1','B','C','A','D'),(2,32,'term 1 ','b','c','','d'),(3,40,'term 1','E','D','B','okish'),(4,1,'1','A','A','A','ok');
+/*!40000 ALTER TABLE `co_scholastic` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `parents`
+--
+
+DROP TABLE IF EXISTS `parents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `parents` (
+  `parent_id` int NOT NULL AUTO_INCREMENT,
+  `student_id` int DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`parent_id`),
+  KEY `student_id` (`student_id`),
+  CONSTRAINT `parents_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `parents`
+--
+
+LOCK TABLES `parents` WRITE;
+/*!40000 ALTER TABLE `parents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `parents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `results`
+--
+
+DROP TABLE IF EXISTS `results`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `results` (
+  `result_id` int NOT NULL AUTO_INCREMENT,
+  `student_id` int DEFAULT NULL,
+  `subject_id` int DEFAULT NULL,
+  `exam_type` varchar(20) DEFAULT NULL,
+  `marks_obtained` int DEFAULT NULL,
+  `max_marks` int DEFAULT '100',
+  `grade` varchar(2) DEFAULT NULL,
+  PRIMARY KEY (`result_id`),
+  KEY `student_id` (`student_id`),
+  KEY `subject_id` (`subject_id`),
+  CONSTRAINT `results_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
+  CONSTRAINT `results_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`subject_id`),
+  CONSTRAINT `results_chk_1` CHECK ((`marks_obtained` between 0 and 100))
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `results`
+--
+
+LOCK TABLES `results` WRITE;
+/*!40000 ALTER TABLE `results` DISABLE KEYS */;
+INSERT INTO `results` VALUES (1,1,1,'term1',45,100,'C2'),(2,24,1,'term 1',87,100,'A2'),(3,25,1,'term 1',90,100,'A2'),(4,26,1,'term 1 ',34,100,'D'),(5,27,1,'term 1 ',60,100,'C1'),(6,28,1,'term 2 ',60,100,'C1'),(7,29,1,'term 1 ',65,100,'B2'),(8,30,1,'term 1',67,100,'B2'),(9,31,3,'term 1 ',47,100,'C2'),(10,40,1,'term 1',87,100,'A2'),(11,39,1,'term 1',66,100,'B2'),(12,38,1,'term 1',69,100,'B2'),(13,44,1,'term 1',45,100,'C2'),(40,1,1,'1',1,100,'E');
+/*!40000 ALTER TABLE `results` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `student_teacher_map`
+--
+
+DROP TABLE IF EXISTS `student_teacher_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `student_teacher_map` (
+  `student_id` int NOT NULL,
+  `teacher_id` varchar(45) NOT NULL,
+  PRIMARY KEY (`student_id`,`teacher_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `student_teacher_map`
+--
+
+LOCK TABLES `student_teacher_map` WRITE;
+/*!40000 ALTER TABLE `student_teacher_map` DISABLE KEYS */;
+INSERT INTO `student_teacher_map` VALUES (1,'2'),(24,'4'),(25,'5'),(26,'6'),(27,'7'),(28,'8'),(29,'9'),(30,'10'),(31,'11'),(32,'12'),(33,'13'),(34,'14'),(35,'2'),(36,'4'),(37,'5'),(38,'6'),(39,'7'),(40,'8'),(41,'9'),(42,'10'),(43,'11'),(44,'12'),(45,'13');
+/*!40000 ALTER TABLE `student_teacher_map` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `students`
+--
+
+DROP TABLE IF EXISTS `students`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `students` (
+  `student_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `class` varchar(10) NOT NULL,
+  `dob` date DEFAULT NULL,
+  `gender` varchar(10) DEFAULT NULL,
+  `parent_email` varchar(100) DEFAULT NULL,
+  `password` varchar(50) NOT NULL,
+  PRIMARY KEY (`student_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `students`
+--
+
+LOCK TABLES `students` WRITE;
+/*!40000 ALTER TABLE `students` DISABLE KEYS */;
+INSERT INTO `students` VALUES (1,'Rahul Singh','10','2008-07-15','Male','rahul.parent@example.com','rahul123'),(24,'paras garg','12','2008-06-12','Male','paras.parent@gmail.com','paras123'),(25,'manish','12','2008-07-12','Male','manish.parent@gmail.com','manish123'),(26,'sanyam','12','2008-08-12','Male','sanyam.parent@gmail.com','sanyam123'),(27,'namrta jha','12','2008-10-31','Female','namrta.parent@gmail.com','namrta123'),(28,'shristi','12','2008-06-10','Female','shristi.parent@gmail.com','shristi123'),(29,'sunny singh','12','2008-02-16','Male','sunny.parent@gmail.com','sunny123'),(30,'sujal','12','2008-06-12','Male','sujal.parent@gmail.com','sujal123'),(31,'vaibhav','12','2008-11-12','Male','vaibhav.parent@gmail.com','vaibhav123'),(32,'vedansh','12','2008-12-12','Male','vedansh.parent@gmail.com','vedansh123'),(33,'jiya','12','2008-06-12','Female','jiya.parent@gmail.com','jiya123'),(34,'rishab','12','2008-12-31','Male','rishab.parent@gmail.com','rishab123'),(35,'anshika','12','2008-04-24','Female','anshika.parent@gmail.com','anshika123'),(36,'jai pawan verma','12','2008-06-25','Male','jpv.parent@gmail.com','jpv123'),(37,'saurabh','12','2008-05-11','Male','saurabh.parent@gmail.com','saurabh123'),(38,'deepu','12','2008-08-02','Male','deepu.parent@gmail.com','deepu123'),(39,'shubham','12','2008-09-01','Male','shubham.parent@gmail.com','shubham123'),(40,'punit','12','2008-10-30','Male','punit.parent@gmail.com','punit123'),(41,'yash bharadwaj','12','2008-11-15','Male','yash.parent@gmail.com','yash123'),(42,'hansi','12','2008-04-10','Female','hansi.parent@gmail.com','hansi123'),(43,'himanshi','12','2008-12-17','Female','himanshi.parent@gmail.com','himanshi123'),(44,'shikha','12','2008-05-22','Female','shikha.parent@gmail.com','shikha123'),(45,'nilakshi','12','2008-11-05','Female','nilakshi.parent@gmail.com','nilakshi123');
+/*!40000 ALTER TABLE `students` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `subjects`
+--
+
+DROP TABLE IF EXISTS `subjects`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `subjects` (
+  `subject_id` int NOT NULL AUTO_INCREMENT,
+  `subject_name` varchar(50) NOT NULL,
+  `class` varchar(10) NOT NULL,
+  PRIMARY KEY (`subject_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `subjects`
+--
+
+LOCK TABLES `subjects` WRITE;
+/*!40000 ALTER TABLE `subjects` DISABLE KEYS */;
+INSERT INTO `subjects` VALUES (1,'Mathematics','10'),(2,'Mathematics','12'),(3,'physics','12'),(4,'English','12'),(5,'CHEMISTRY','12'),(6,'Hindi','12'),(7,'biology','12'),(8,'Mathematics','10'),(9,'Science','10'),(10,'English','10'),(11,'Social Studies','10'),(12,'Hindi','10');
+/*!40000 ALTER TABLE `subjects` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `teachers`
+--
+
+DROP TABLE IF EXISTS `teachers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `teachers` (
+  `teacher_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `subject_id` int DEFAULT NULL,
+  PRIMARY KEY (`teacher_id`),
+  UNIQUE KEY `username` (`username`),
+  KEY `subject_id` (`subject_id`),
+  CONSTRAINT `teachers_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`subject_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `teachers`
+--
+
+LOCK TABLES `teachers` WRITE;
+/*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
+INSERT INTO `teachers` VALUES (2,'Mr. Sharma','sharma123','pass123',1),(4,'Mr. Rajesh Mathur','rajeshmath','maths123',1),(5,'Ms. Nisha Rao','nisharao','sci123',2),(6,'Mr. John D\'Souza','johnenglish','eng123',3),(7,'Ms. Rekha Das','rekhadas','sst123',4),(8,'Mr. Rakesh Yadav','rakeshhindi','hindi123',5),(9,'Mr. dilip singh','d','1',1),(10,'Mr. chaitanya','paresherphysics','physics123',2),(11,'Mrs. renu','renumath','maths123',3),(12,'mrs. rajinder','rajindercs','cs123',4),(13,'Mr. manoj kumar','manojp.ed','physical123',5),(14,'Mrs. mamta sharma','mamtahindi','hindi123',6);
+/*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-10-05 13:44:53
