@@ -1,14 +1,24 @@
+
 import mysql.connector
+
+# ----------------------------
+# User-defined data type to store DB connection properties
+class DBProperties:
+    def __init__(self, host, user, password, database):
+        self.host = host
+        self.user = user
+        self.password = password
+        self.database = database
 
 # ----------------------------
 # Establishes and returns a connection to the MySQL database.
 # ----------------------------
-def connect_db():
+def connect_db(db_props):
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="ambrish",         
-        database="oserms"
+        host=db_props.host,
+        user=db_props.user,
+        password=db_props.password,
+        database=db_props.database
     )
 
 
@@ -187,8 +197,19 @@ def teacher_login(cursor, conn):
 # Main program loop for user interaction and menu navigation.
 # ----------------------------
 def main():
-    conn = connect_db()
-    cursor = conn.cursor()
+    print("Enter database connection details:")
+    host = input("Host (default: localhost): ").strip() or "localhost"
+    user = input("User (default: root): ").strip() or "root"
+    password = input("Password: ").strip()
+    database = input("Database name: ").strip()
+    db_props = DBProperties(host, user, password, database)
+
+    try:
+        conn = connect_db(db_props)
+        cursor = conn.cursor()
+    except Exception as e:
+        print(f"Failed to connect to database: {e}")
+        return
 
     while True:
         print("\n--- Online School Exam Result Management ---")
